@@ -1,11 +1,13 @@
 
 #include <fstream>
 #include <iostream>
-#include <algorithm>
+
 
 int replace(std::string str, char **argv)
 {
-    int pos;
+    std::string s1 = argv[2];
+    std::string s2 = argv[3];
+    std::string::size_type pos;
     std::ofstream out;
 
     out.open((std::string(argv[1]) + ".replace").c_str());
@@ -13,13 +15,17 @@ int replace(std::string str, char **argv)
     {
         return(1);
     }
-    for (int i = 0; i < (int)str.size(); i++)
+
+    if (s1.empty())
+        return (1);
+
+    for (std::string::size_type i = 0; i < str.size(); i++)
     {
-        pos = str.find(argv[2], 1);
-        if (pos != -1 && pos == 1)
+        pos = str.find(s1, i);
+        if (pos != std::string::npos && pos == i)
         {
-            out << argv[3];
-            i += std::string(argv[2]).size() - 1;
+            out << s2;
+            i += s1.size() - 1;
         }
         else
         {
@@ -34,20 +40,21 @@ int replace(std::string str, char **argv)
 int main (int argc, char **argv)
 {
     char c;
-    std::ifstream out;
+    std::ifstream in;
     std::string str;
 
     if(argc != 4)
     {
         return(1);
     }
-    out.open((argv[1]));
-    if (out.fail())
+    in.open((argv[1]));
+    if (in.fail())
     {
         return (1);
     }
-    while(!out.eof() && out >> std::noskipws >> c)
-        str =+ c;
-    out.close();
+
+    while (in >> std::noskipws >> c)
+        str += c;
+    in.close();
     return (replace(str, argv));
 }
