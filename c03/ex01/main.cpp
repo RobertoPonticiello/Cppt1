@@ -1,4 +1,5 @@
 #include "ClapTrap.hpp"
+#include "ScavTrap.hpp"
 
 int main (void)
 {
@@ -8,4 +9,8 @@ int main (void)
     a.attack("ClapTrap B");
     b.takeDamage(3);
     b.beRepaired(5);
+
+    ScavTrap c("ScavTrap C");
+    c.attack("ClapTrap A");
+    c.guardGate();
 }
